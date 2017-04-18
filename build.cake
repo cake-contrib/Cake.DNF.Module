@@ -1,4 +1,7 @@
 //#tool "nuget:?package=GitVersion.CommandLine"
+#load "helpers.cake"
+#tool nuget:?package=DocFx.Console
+#addin nuget:?package=Cake.DocFx
 
 ///////////////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -12,10 +15,7 @@ var configuration = Argument("configuration", "Release");
 ///////////////////////////////////////////////////////////////////////////////
 
 var solutionPath = File("./src/Cake.DNF.Module.sln");
-var solution = ParseSolution(solutionPath);
-var projects = solution.Projects.Where(p => p.Type != "{2150E333-8FDC-42A3-9474-1A3956D46DE8}");
-var projectPaths = projects.Select(p => p.Path.GetDirectory());
-var testAssemblies = projects.Where(p => p.Name.Contains(".Tests")).Select(p => p.Path.GetDirectory() + "/bin/" + configuration + "/" + p.Name + ".dll");
+var projects = GetProjects(solutionPath);
 var artifacts = "./dist/";
 var testResultsPath = MakeAbsolute(Directory(artifacts + "./test-results"));
 GitVersion versionInfo = null;
@@ -47,7 +47,7 @@ Task("Clean")
 	.Does(() =>
 {
 	// Clean solution directories.
-	foreach(var path in projectPaths)
+	foreach(var path in projects.AllProjectPaths)
 	{
 		Information("Cleaning {0}", path);
 		CleanDirectories(path + "/**/bin/" + configuration);
@@ -63,7 +63,7 @@ Task("Restore")
 	// Restore all NuGet packages.
 	Information("Restoring solution...");
 	//NuGetRestore(solutionPath);
-	foreach (var project in projectPaths) {
+	foreach (var project in projects.AllProjectPaths) {
 		DotNetCoreRestore(project.FullPath);
 	}
 });
@@ -75,7 +75,7 @@ Task("Build")
 {
 	Information("Building solution...");
 	foreach(var framework in frameworks) {
-		foreach (var project in projectPaths) {
+		foreach (var project in projects.SourceProjectPaths) {
 			var settings = new DotNetCoreBuildSettings {
 				Framework = framework,
 				Configuration = configuration,
@@ -91,23 +91,31 @@ Task("Run-Unit-Tests")
 	.IsDependentOn("Build")
 	.Does(() =>
 {
-	if (testAssemblies.Any()) {
+	if (projects.TestProjects.Any()) {
 		CreateDirectory(testResultsPath);
 
-		var settings = new XUnit2Settings {
+		/*var settings = new XUnit2Settings {
 			NoAppDomain = true,
 			XmlReport = true,
 			HtmlReport = true,
 			OutputDirectory = testResultsPath,
 		};
-		settings.ExcludeTrait("Category", "Integration");
+		settings.ExcludeTrait("Category", "Integration"); */
 
-		XUnit2(testAssemblies, settings);
+		var settings = new DotNetCoreTestSettings {
+			Configuration = configuration
+		};
+
+		//XUnit2(testAssemblies, settings);
+		foreach(var project in projects.TestProjects) {
+			DotNetCoreTest(project.Path.FullPath, settings);
+		}
 	}
 });
 
 Task("Generate-Docs").Does(() => {
 	DocFx("./docfx/docfx.json");
+	Zip("./docfx/_site/", artifacts + "/docfx.zip");
 });
 
 Task("Post-Build")
@@ -118,10 +126,10 @@ Task("Post-Build")
 {
 	CreateDirectory(artifacts + "build");
 	CreateDirectory(artifacts + "modules");
-	foreach (var project in projects) {
+	foreach (var project in projects.SourceProjects) {
 		CreateDirectory(artifacts + "build/" + project.Name);
 		foreach (var framework in frameworks) {
-			var frameworkDir = artifacts + "build/" + project.Name + "/" + framework);
+			var frameworkDir = artifacts + "build/" + project.Name + "/" + framework;
 			CreateDirectory(frameworkDir);
 			var files = GetFiles(project.Path.GetDirectory() + "/bin/" + configuration + "/" + framework + "/" + project.Name +".*");
 			CopyFiles(files, frameworkDir);
@@ -134,12 +142,12 @@ Task("Pack")
 	.Does(() =>
 {
 	CreateDirectory(artifacts + "/package");
-	foreach(var project in projects)
+	foreach(var project in projects.SourceProjects)
     {
         Information("\nPacking {0}...", project.Name);
-        DotNetCorePack(project.Path, new DotNetCorePackSettings 
+        DotNetCorePack(project.Path.FullPath, new DotNetCorePackSettings 
         {
-            Configuration = config,
+            Configuration = configuration,
             OutputDirectory = artifacts + "/package/",
             NoBuild = true,
             Verbose = false,

@@ -16,6 +16,10 @@ This repository is based around the Git Flow workflow, using feature branches an
 - Open a PR from your feature branch against the `develop` branch (include the GitHub issue number for fixes)
 - Success! I will provide feedback if needed, or just accept the changes directly and they should appear in the next release
 
+## Documentation
+
+This documentation should include an *Improve this Doc* button in the upper right. Click it to quickly jump to the source of the current documentation. You can then fork, branch and issue a PR just as with code contributions (see above).
+
 ## License
 
 Note that this project (and all contributions) fall under the MIT License terms.

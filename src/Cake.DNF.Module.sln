@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.0.0
-MinimumVisualStudioVersion = 10.0.0.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cake.DNF.Module", "Cake.DNF.Module\Cake.DNF.Module.csproj", "{931D330F-6F40-4B0B-8BD8-1014913A3418}"
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cake.DNF.Module", "Cake.DNF.Module\Cake.DNF.Module.csproj", "{931D330F-6F40-4B0B-8BD8-1014913A3418}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Cake.Dnf.Module", "Cake.Dnf.Module\Cake.Dnf.Module.xproj", "{36619018-4ADA-4D30-8236-DADD4D0EF196}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Cake.Dnf.Module.Tests", "Cake.Dnf.Module.Tests\Cake.Dnf.Module.Tests.xproj", "{BD114567-D98C-4052-A998-21992F5CCD14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cake.DNF.Module.Tests", "Cake.DNF.Module.Tests\Cake.DNF.Module.Tests.csproj", "{9E8A08D4-BF76-4D42-8149-885C6EA2212C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +17,10 @@ Global
 		{931D330F-6F40-4B0B-8BD8-1014913A3418}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{931D330F-6F40-4B0B-8BD8-1014913A3418}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{931D330F-6F40-4B0B-8BD8-1014913A3418}.Release|Any CPU.Build.0 = Release|Any CPU
-		{36619018-4ADA-4D30-8236-DADD4D0EF196}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{36619018-4ADA-4D30-8236-DADD4D0EF196}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{36619018-4ADA-4D30-8236-DADD4D0EF196}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{36619018-4ADA-4D30-8236-DADD4D0EF196}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BD114567-D98C-4052-A998-21992F5CCD14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BD114567-D98C-4052-A998-21992F5CCD14}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BD114567-D98C-4052-A998-21992F5CCD14}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BD114567-D98C-4052-A998-21992F5CCD14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E8A08D4-BF76-4D42-8149-885C6EA2212C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E8A08D4-BF76-4D42-8149-885C6EA2212C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E8A08D4-BF76-4D42-8149-885C6EA2212C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E8A08D4-BF76-4D42-8149-885C6EA2212C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

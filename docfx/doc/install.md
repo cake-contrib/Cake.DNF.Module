@@ -13,8 +13,8 @@ Due to the fact that Cake Modules are extending and altering the internals of Ca
 	```
 1. Run the build as normal. During Cake's execution, it will recognise the module assembly which has been restored into the `tools/Modules` folder, and load it.
 
-> ![NOTE]
+> [!NOTE]
 > Similar to the recommendation regarding only checking in your `packages.config` and not the entire contents of the Cake `tools/` folder, the same recommendation is applied here. Only check in the `packages.config` file in the `Modules` folder, and not the entire contents.
 
-> ![NOTE]
+> [!NOTE]
 > These steps assume you are using the `nuget.org` feed. Custom feeds require additional steps.
