@@ -4,7 +4,7 @@
       "src": [
         {
           "files": [
-            "src/**.csproj"
+            "src/Cake.DNF.Module/*.csproj"
           ],
           "exclude": [
             "**/obj/**",
