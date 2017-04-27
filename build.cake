@@ -1,4 +1,4 @@
-//#tool "nuget:?package=GitVersion.CommandLine"
+#tool "nuget:?package=GitVersion.CommandLine"
 #load "helpers.cake"
 #tool nuget:?package=DocFx.Console
 #addin nuget:?package=Cake.DocFx
@@ -19,7 +19,7 @@ var projects = GetProjects(solutionPath);
 var artifacts = "./dist/";
 var testResultsPath = MakeAbsolute(Directory(artifacts + "./test-results"));
 GitVersion versionInfo = null;
-var frameworks = new List<string> { "netstandard1.6" };
+var frameworks = new List<string> { "netstandard1.6", "net45" };
 
 ///////////////////////////////////////////////////////////////////////////////
 // SETUP / TEARDOWN
@@ -29,8 +29,9 @@ Setup(ctx =>
 {
 	// Executed BEFORE the first task.
 	Information("Running tasks...");
-	//versionInfo = GitVersion();
-	//Information("Building for version {0}", versionInfo.FullSemVer);
+	versionInfo = GitVersion();
+	Information("Building for version {0}", versionInfo.FullSemVer);
+	Verbose("Building for " + string.Join(", ", frameworks));
 });
 
 Teardown(ctx =>
@@ -103,7 +104,8 @@ Task("Run-Unit-Tests")
 		settings.ExcludeTrait("Category", "Integration"); */
 
 		var settings = new DotNetCoreTestSettings {
-			Configuration = configuration
+			Configuration = configuration,
+			//ArgumentCustomization = args => args.AppendSwitchQuoted("--logger", "trx;LogFilePath=" + testResultsPath + "tests.trx")
 		};
 
 		//XUnit2(testAssemblies, settings);
@@ -155,6 +157,36 @@ Task("Pack")
                 .Append("--include-symbols --include-source")
         });
     }
+});
+
+Task("NuGet")
+	.IsDependentOn("Post-Build")
+	.Does(() => 
+{
+	CreateDirectory(artifacts + "package");
+	Information("Building NuGet package");
+	var versionNotes = ParseAllReleaseNotes("./ReleaseNotes.md").FirstOrDefault(v => v.Version.ToString() == versionInfo.MajorMinorPatch);
+	var content = GetContent(frameworks, projects);
+	var settings = new NuGetPackSettings {
+		Id				= "Cake.DNF.Module",
+		Version			= versionInfo.NuGetVersionV2,
+		Title			= "Cake DNF Module",
+		Authors		 	= new[] { "Alistair Chapman" },
+		Owners			= new[] { "achapman", "cake-contrib" },
+		Description		= "This Cake module adds support for the DNF package manager when installing tools in your Cake build scripts.",
+		ReleaseNotes	= versionNotes != null ? versionNotes.Notes.ToList() : new List<string>(),
+		Summary			= "Adds DNF support to Cake builds.",
+		ProjectUrl		= new Uri("https://github.com/cake-contrib/Cake.DNF.Module"),
+		IconUrl			= new Uri("https://cakeresources.blob.core.windows.net/nuget/128/package-128.png"),
+		LicenseUrl		= new Uri("https://raw.githubusercontent.com/agc93/Cake.DNF.Module/master/LICENSE"),
+		Copyright		= "Alistair Chapman 2017",
+		Tags			= new[] { "cake", "build", "ci", "build", "dnf", "linux" },
+		OutputDirectory = artifacts + "/package",
+		Files			= content,
+		//KeepTemporaryNuSpecFile = true
+	};
+
+	NuGetPack(settings);
 });
 
 Task("Default")
