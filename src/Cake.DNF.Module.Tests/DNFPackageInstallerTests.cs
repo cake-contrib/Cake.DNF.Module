@@ -127,7 +127,7 @@ namespace Cake.DNF.Module.Tests
             public void Should_Ignore_Custom_Source_If_AbsoluteUri_Is_Used()
             {
                 var fixture = new DNFPackageInstallerFixture();
-                fixture.Package = new PackageReference("choco:http://absolute/?package=windirstat");
+                fixture.Package = new PackageReference("dnf:http://absolute/?package=windirstat");
 
                 // When
                 var result = Record.Exception(() => fixture.Install());

@@ -30,7 +30,7 @@ The specific version of the application that is being installed.  If not provide
 ### Example
 
 ```
-#tool choco:?package=glx-utils&version=8.3.0
+#tool dnf:?package=glx-utils&version=8.3.0
 ```
 
 # Architecture

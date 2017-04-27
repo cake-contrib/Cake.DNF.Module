@@ -15,7 +15,7 @@ If the tool in question comes from a different source, you can change that as fo
 To install a specific version of a package:
 
 ```
-#tool choco:?package=glx-utils&version=8.3.0
+#tool dnf:?package=glx-utils&version=8.3.0
 ```
 
 or to tell DNF to use the "best" available version:
