@@ -6,3 +6,7 @@
 # 0.1.1
 
 - Supports Cake 0.19.5
+
+# 0.1.2
+
+- Supports Cake 0.20.0
