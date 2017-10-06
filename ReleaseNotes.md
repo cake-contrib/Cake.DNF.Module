@@ -10,3 +10,7 @@
 # 0.1.2
 
 - Supports Cake 0.20.0
+
+# 0.1.3
+
+- Supports Cake 0.22.2
