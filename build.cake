@@ -19,7 +19,7 @@ var projects = GetProjects(solutionPath);
 var artifacts = "./dist/";
 var testResultsPath = MakeAbsolute(Directory(artifacts + "./test-results"));
 GitVersion versionInfo = null;
-var frameworks = new List<string> { "netstandard1.6", "net45" };
+var frameworks = new List<string> { "netstandard1.6", "net46" };
 
 ///////////////////////////////////////////////////////////////////////////////
 // SETUP / TEARDOWN
@@ -152,7 +152,6 @@ Task("Pack")
             Configuration = configuration,
             OutputDirectory = artifacts + "/package/",
             NoBuild = true,
-            Verbose = false,
             ArgumentCustomization = args => args
                 .Append("--include-symbols --include-source")
         });
@@ -177,7 +176,7 @@ Task("NuGet")
 		ReleaseNotes	= versionNotes != null ? versionNotes.Notes.ToList() : new List<string>(),
 		Summary			= "Adds DNF support to Cake builds.",
 		ProjectUrl		= new Uri("https://github.com/cake-contrib/Cake.DNF.Module"),
-		IconUrl			= new Uri("https://cakeresources.blob.core.windows.net/nuget/128/package-128.png"),
+		IconUrl			= new Uri("https://cdn.rawgit.com/cake-contrib/graphics/a5cf0f881c390650144b2243ae551d5b9f836196/png/cake-contrib-medium.png"),
 		LicenseUrl		= new Uri("https://raw.githubusercontent.com/agc93/Cake.DNF.Module/master/LICENSE"),
 		Copyright		= "Alistair Chapman 2017",
 		Tags			= new[] { "cake", "build", "ci", "build", "dnf", "linux" },
