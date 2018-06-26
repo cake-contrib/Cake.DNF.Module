@@ -1,7 +1,7 @@
 #tool "nuget:?package=GitVersion.CommandLine"
 #load "helpers.cake"
-#tool nuget:?package=DocFx.Console
-#addin nuget:?package=Cake.DocFx
+#tool nuget:?package=DocFx.Console&version=2.33.2
+#addin nuget:?package=Cake.DocFx&version=0.7.0
 
 ///////////////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -19,7 +19,7 @@ var projects = GetProjects(solutionPath);
 var artifacts = "./dist/";
 var testResultsPath = MakeAbsolute(Directory(artifacts + "./test-results"));
 GitVersion versionInfo = null;
-var frameworks = new List<string> { "netstandard1.6", "net46" };
+var frameworks = new List<string> { "netstandard2.0" };
 
 ///////////////////////////////////////////////////////////////////////////////
 // SETUP / TEARDOWN
